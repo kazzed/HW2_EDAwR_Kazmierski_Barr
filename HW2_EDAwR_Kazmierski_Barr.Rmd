@@ -43,6 +43,8 @@ for this homework assignment in your GitHub account. Periodically push your comm
 to GitHub. When done with the assignment, paste in the URL of your GitHub project
 so that I can go look at it.
 
+https://github.com/kazzed/HW2_EDAwR_Kazmierski_Barr
+
 ## Step 3 - Set working directory and explore data folder
 
 Set the working directory or create an R Studio project in the current folder. You'll notice that there is a folder named **data**.
@@ -207,7 +209,7 @@ Income.
 
 Repeat the histogram but only for counties with less than 2.5 million people.
 
-```{r histo_lt2.5m}
+```{r density}
 county_df_2.5 <- county_df %>%
   filter(TotalPop < 2500000)
 
@@ -315,9 +317,10 @@ CountyCount <- c(Midwest, South, Northeast, West)
 
 Regions <- data.frame(Region, CountyCount)
 
+
 ggplot(Regions, aes(Region, CountyCount)) + 
   geom_col(stat=Region, fill="orange", alpha=0.7) + 
-  labs(x="Region", y="Number of Counties", title="Number of Counties by Region" )+
+  labs(x="Region", y="Number of Counties", title="Number of Counties by Region" ) +
   coord_flip()
 
 ```
@@ -389,18 +392,18 @@ transform of data when plotting.
 
 Outliers, high skewness, and high variation in the data can make it difficult to interpret or discover patterns.  Transforming data using the logarithmic method reduces variance and sets the data in a normal distribution.  Additionally, transforming data may improve the regression analysis itself, such as the error distribution.
 
-```{r}
+```{r transform}
 county_df$TotalPop_log10 <- log10(county_df$TotalPop)
 county_df$Income_log10 <- log10(county_df$Income)
 ```
 
-```{r}
+```{r plot_transform}
 ggplot(county_df, aes(county_df$TotalPop_log10, county_df$Income_log10)) +
   geom_point(color = "dark green") +
   labs(x="Total Population (log10)", y="Income (log10)", title="Income vs Total Population")
 ```
 
-```{r}
+```{r transform_dist}
 ggplot(county_df, aes(county_df$Income_log10)) + geom_histogram(fill="black", alpha=0.5) + labs(x="Income (log10)")
 #Demonstrates normal distribution of Income after log10 transformation.
 ```
@@ -414,7 +417,15 @@ either in the full US dataset or the MI only dataset. In addition, try out
 some of ggplots additional features such as themes, axis formatting, gridline
 control, or others.
 
-```{r}
-county_df$WhitePercent <- (countydf)
+
+```{r load_ggthemes}
+library(ggthemes)
 ```
+
+
+```{r hacker_extra}
+ggplot(county_df, aes(county_df$White, county_df$Income_log10)) + geom_point() + theme_economist() + theme(panel.grid.major.x = element_line(color = "white")) + labs(x="County Demographics: % White", y="County Median Income (log10 transformed)", title="County Income and Demographics")
+```
+
+
 
